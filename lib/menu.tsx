@@ -10,7 +10,7 @@ export const navLinks = [
     label: "대시보드",
   },
   {
-    url: "/banner",
+    url: "/banners",
     icon: <BsCollectionFill />,
     label: "배너",
   },
