@@ -39,3 +39,16 @@ export const POST = async (req: NextRequest) => {
     return new NextResponse("Server Error", { status: 500 });
   }
 };
+
+export const GET = async (req: NextRequest) => {
+  try {
+    await dbConnect();
+
+    const banners = await Banner.find().sort({ createdAt: "desc" });
+
+    return NextResponse.json(banners, { status: 200 });
+  } catch (error) {
+    console.log("banners_GET", error);
+    return new NextResponse("Server Error", { status: 500 });
+  }
+};
