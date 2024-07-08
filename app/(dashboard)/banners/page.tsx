@@ -6,6 +6,7 @@ import { DataTable } from "@/components/custom ui/BasicTable";
 import { columns } from "@/components/banners/BannerColumns";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import Loading from '@/components/custom ui/Loading';
 
 export default function Banners() {
   const router = useRouter();
@@ -30,6 +31,10 @@ export default function Banners() {
   useEffect(() => {
     getBanners();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="p-10">
