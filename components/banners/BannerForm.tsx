@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "../custom ui/ImageUpload";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
@@ -27,6 +28,7 @@ const formSchema = z.object({
 
 export default function BannerForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +39,22 @@ export default function BannerForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setLoading(true);
+      const res = await fetch("/api/banners", {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
+
+      if (res.ok) {
+        setLoading(false);
+        toast.success("Banner가 등록되었습니다.");
+        router.push("/banners");
+      }
+    } catch (error) {
+      console.log("BannerForm_POST", error);
+      toast.error("Banner 등록에 오류가 생겼습니다.");
+    }
   };
 
   return (
@@ -97,7 +114,7 @@ export default function BannerForm() {
               등록하기
             </Button>
             <Button
-              type="submit"
+              type="button"
               onClick={() => router.push("/banners")}
               className="bg-red-500 text-white transition hover:bg-red-600"
             >

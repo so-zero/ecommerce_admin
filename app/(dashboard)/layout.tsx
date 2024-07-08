@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Sidebar from "@/components/layout/Sidebar";
 import Navbar from "@/components/layout/Navbar";
+import { ToasterProvider } from '@/lib/ToasterProvider';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
+          <ToasterProvider />
           <div className="flex max-lg:flex-col text-gray-600">
             <Navbar />
             <Sidebar />
