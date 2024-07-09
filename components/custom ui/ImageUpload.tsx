@@ -9,7 +9,7 @@ interface ImageUploadProps {
   onRemove: (value: string) => void;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({
+const ImageUpload: React.FC<ImageUploadProps> = ({
   value,
   onChange,
   onRemove,
@@ -45,6 +45,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         {({ open }) => {
           return (
             <Button
+              type="button"
               onClick={() => open()}
               className="border border-gray-200 text-gray-400 flex"
             >
@@ -56,3 +57,5 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     </div>
   );
 };
+
+export default ImageUpload;

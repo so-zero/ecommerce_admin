@@ -17,19 +17,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ImageUpload } from "../custom ui/ImageUpload";
 import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
 import Loading from "../custom ui/Loading";
+import ImageUpload from "../custom ui/ImageUpload";
 
 const formSchema = z.object({
   title: z.string().min(2).max(20),
-  description: z.string().min(10).max(200).trim(),
+  description: z.string().min(2).max(500).trim(),
   image: z.string(),
 });
 
 interface BannerFormProps {
-  initialData?: BannerType | null;
+  initialData?: BannerType | null; //Must have "?" to make it optional
 }
 
 const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {

@@ -17,7 +17,7 @@ const bannerSchema = new mongoose.Schema(
     },
     products: [
       {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
       },
     ],
