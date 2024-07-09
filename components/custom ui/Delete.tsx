@@ -15,31 +15,38 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
+import Loading from './Loading';
 
 interface DeleteProps {
+  item: string;
   id: string;
 }
 
-const Delete: React.FC<DeleteProps> = ({ id }) => {
+const Delete: React.FC<DeleteProps> = ({ item, id }) => {
   const [loading, setLoading] = useState(false);
 
   const onDelete = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/banners/${id}`, {
+      const itemType = item === "product" ? "products" : "banners";
+      const res = await fetch(`/api/${itemType}/${id}`, {
         method: "DELETE",
       });
 
       if (res.ok) {
         setLoading(false);
-        window.location.href = "/banners";
-        toast.success("Banner가 삭제되었습니다.");
+        window.location.href = `/${itemType}`;
+        toast.success(`${itemType}가 삭제되었습니다.`);
       }
     } catch (error) {
-      console.log("Banner_DELETE", error);
-      toast.error("Banner 삭제에 오류가 생겼습니다.");
+      console.log("Banner&Product_DELETE", error);
+      toast.error("Banner, Product 삭제에 오류가 생겼습니다.");
     }
   };
+
+    if (loading) {
+      return <Loading />;
+    }
 
   return (
     <AlertDialog>

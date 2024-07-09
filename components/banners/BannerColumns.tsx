@@ -24,6 +24,6 @@ export const columns: ColumnDef<BannerType>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <Delete id={row.original._id} />,
+    cell: ({ row }) => <Delete item='banner' id={row.original._id} />,
   },
 ];

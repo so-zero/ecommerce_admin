@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { dbConnect } from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import Product from "@/lib/models/Product";
+import Banner from "@/lib/models/Banner";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -45,6 +46,21 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(newProduct, { status: 200 });
   } catch (error) {
     console.log("products_POST", error);
+    return new NextResponse("Server Error", { status: 500 });
+  }
+};
+
+export const GET = async (req: NextRequest) => {
+  try {
+    await dbConnect();
+
+    const products = await Product.find()
+      .sort({ createdAt: "desc" })
+      .populate({ path: "banners", model: Banner });
+
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    console.log("products_GET", error);
     return new NextResponse("Server Error", { status: 500 });
   }
 };

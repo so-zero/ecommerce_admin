@@ -335,7 +335,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             </Button>
             <Button
               type="button"
-              onClick={() => router.push("/banners")}
+              onClick={() => router.push("/products")}
               className="bg-red-500 text-white transition hover:bg-red-600"
             >
               취소하기
