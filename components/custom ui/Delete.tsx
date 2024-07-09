@@ -15,7 +15,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
-import Loading from './Loading';
 
 interface DeleteProps {
   item: string;
@@ -43,10 +42,6 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
       toast.error("Banner, Product 삭제에 오류가 생겼습니다.");
     }
   };
-
-    if (loading) {
-      return <Loading />;
-    }
 
   return (
     <AlertDialog>

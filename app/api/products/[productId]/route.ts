@@ -16,14 +16,9 @@ export const GET = async (
       model: Banner,
     });
 
-    if (!product) {
-      return new NextResponse(
-        JSON.stringify({ message: "product not found" }),
-        {
-          status: 404,
-        }
-      );
-    }
+   if (!product) {
+     return new NextResponse("product not found", { status: 404 });
+   }
 
     return NextResponse.json(product, { status: 200 });
   } catch (error) {
@@ -48,12 +43,7 @@ export const POST = async (
     const product = await Product.findById(params.productId);
 
     if (!product) {
-      return new NextResponse(
-        JSON.stringify({ message: "Product not found" }),
-        {
-          status: 404,
-        }
-      );
+      return new NextResponse("product not found", { status: 404 });
     }
 
     const {
@@ -114,6 +104,42 @@ export const POST = async (
     return NextResponse.json(updateProduct, { status: 200 });
   } catch (error) {
     console.log("banner_POST", error);
+    return new NextResponse("Server Error", { status: 500 });
+  }
+};
+
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: { productId: string } }
+) => {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
+
+    await dbConnect();
+
+    const product = await Product.findById(params.productId);
+
+    if (!product) {
+      return new NextResponse("product not found", { status: 404 });
+    }
+
+    await Product.findByIdAndDelete(product._id);
+
+    await Promise.all(
+      product.banners.map((bannerId: string) =>
+        Banner.findByIdAndUpdate(bannerId, {
+          $pull: { products: product._id },
+        })
+      )
+    );
+
+    return new NextResponse("Product is deleted successfully", { status: 200 });
+  } catch (error) {
+    console.log("product_DELETE", error);
     return new NextResponse("Server Error", { status: 500 });
   }
 };
