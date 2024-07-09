@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { dbConnect } from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import Banner from "@/lib/models/Banner";
+import Product from "@/lib/models/Product";
 
 export const GET = async (
   req: NextRequest,
@@ -81,6 +82,10 @@ export const DELETE = async (
 
     await Banner.findByIdAndDelete(params.bannerId);
 
+    await Product.updateMany(
+      { banners: params.bannerId },
+      { $pull: { banners: params.bannerId } }
+    );
     return new NextResponse("Banner is deleted successfully", { status: 200 });
   } catch (error) {
     console.log("banner_DELETE", error);

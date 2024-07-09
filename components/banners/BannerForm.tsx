@@ -90,7 +90,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
       {initialData ? (
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">New Collection Banner 수정하기</h1>
-          <Delete id={initialData._id} />
+          <Delete id={initialData._id} item="banner" />
         </div>
       ) : (
         <h1 className="text-xl font-bold">New Collection Banner 등록하기</h1>
