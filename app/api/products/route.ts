@@ -43,6 +43,16 @@ export const POST = async (req: NextRequest) => {
     });
 
     await newProduct.save();
+
+    if (banners) {
+      for (const bannerId of banners) {
+        const banner = await Banner.findById(bannerId);
+        if (banner) {
+          banner.products.push(newProduct._id);
+          await banner.save();
+        }
+      }
+    }
     return NextResponse.json(newProduct, { status: 200 });
   } catch (error) {
     console.log("products_POST", error);

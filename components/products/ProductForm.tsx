@@ -42,12 +42,11 @@ interface ProductFormProps {
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [banners, setBanners] = useState<BannerType[]>([]);
 
   const getBanners = async () => {
     try {
-      setLoading(true);
       const res = await fetch("/api/banners", {
         method: "GET",
       });
@@ -128,7 +127,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       {initialData ? (
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Product 수정하기</h1>
-          <Delete id={initialData._id} />
+          <Delete id={initialData._id} item="product" />
         </div>
       ) : (
         <h1 className="text-xl font-bold">New Product 등록하기</h1>
@@ -300,31 +299,35 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="banners"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Collections</FormLabel>
-                  <FormControl>
-                    <TextSelect
-                      placeholder="배너를 선택해주세요."
-                      banners={banners}
-                      value={field.value}
-                      onChange={(_id) => field.onChange([...field.value, _id])}
-                      onRemove={(idRemove) =>
-                        field.onChange([
-                          ...field.value.filter(
-                            (bannerId) => bannerId !== idRemove
-                          ),
-                        ])
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {banners.length > 0 && (
+              <FormField
+                control={form.control}
+                name="banners"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Collections</FormLabel>
+                    <FormControl>
+                      <TextSelect
+                        placeholder="배너를 선택해주세요."
+                        banners={banners}
+                        value={field.value}
+                        onChange={(_id) =>
+                          field.onChange([...field.value, _id])
+                        }
+                        onRemove={(idRemove) =>
+                          field.onChange([
+                            ...field.value.filter(
+                              (bannerId) => bannerId !== idRemove
+                            ),
+                          ])
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           <div className="flex gap-10">
             <Button
