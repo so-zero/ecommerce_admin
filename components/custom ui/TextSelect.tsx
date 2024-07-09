@@ -31,6 +31,7 @@ const TextSelect: React.FC<TextSelectProps> = ({
   onRemove,
 }) => {
   const [inputValue, setInputValue] = useState("");
+  const [open, setOpen] = useState(false);
 
   let selected: BannerType[];
   if (value.length === 0) {
@@ -61,24 +62,27 @@ const TextSelect: React.FC<TextSelectProps> = ({
           placeholder={placeholder}
           value={inputValue}
           onValueChange={setInputValue}
+          onFocus={() => setOpen(true)}
         />
       </div>
       <CommandList className="mt-2">
-        <CommandGroup className="w-full overflow-auto border rounded-md">
-          {select.map((banner) => (
-            <CommandItem
-              key={banner._id}
-              onMouseDown={(e) => e.preventDefault()}
-              onSelect={() => {
-                onChange(banner._id);
-                setInputValue("");
-              }}
-              className="mb-2 ml-2 cursor-pointer hover:bg-gray-400 transition"
-            >
-              {banner.title}
-            </CommandItem>
-          ))}
-        </CommandGroup>
+        {open && (
+          <CommandGroup className="w-full overflow-auto border rounded-md">
+            {select.map((banner) => (
+              <CommandItem
+                key={banner._id}
+                onMouseDown={(e) => e.preventDefault()}
+                onSelect={() => {
+                  onChange(banner._id);
+                  setInputValue("");
+                }}
+                className="cursor-pointer hover:bg-gray-300 transition"
+              >
+                {banner.title}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        )}
       </CommandList>
     </Command>
   );
